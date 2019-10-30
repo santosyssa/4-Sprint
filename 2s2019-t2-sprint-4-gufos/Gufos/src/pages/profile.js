@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
 
 export default class Profile extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            tokenLocal: null,
+        };
+    }
+
+    componentDidMount() {
+        this._buscarDadosDoStorage();
+    }
+
+    _buscarDadosDoStorage = async () => {
+        try {
+            const tokenDoStorage = await AsyncStorage.getItem('@gufos:token');
+            if (tokenDoStorage != null) {
+                this.setState({ tokenLocal: tokenDoStorage })
+            }
+        } catch (erro) { }
+    };
+
     render() {
         return (
             <View style={styles.profile}>
-                <Text style={styles.titulo}>Nome:</Text>
-                <Text style={styles.info}>Rayssa Tavares dos Santos</Text>
-                <Text style={styles.titulo}>Idade:</Text>
-                <Text style={styles.info}>16 anos</Text>
+                <Text style={styles.titulo}>{this.state.tokenLocal}</Text>
             </View>
         );
     }

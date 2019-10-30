@@ -1,8 +1,16 @@
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack'
+
+//paginas
 import MainScreen from './pages/main';
 import ProfileScreen from './pages/profile';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createAppContainer } from 'react-navigation';
+import SinginScreen from './pages/singin';
+import CategoriasScreen from './pages/categorias';
 
+const AuthStack = createStackNavigator({
+    Sing: { screen: SinginScreen },
+});
 
 //criar a navegação
 const MainNavigation = createBottomTabNavigator({
@@ -11,6 +19,9 @@ const MainNavigation = createBottomTabNavigator({
     },
     Profile: {
         screen: ProfileScreen,
+    },
+    categorias: {
+        screen: CategoriasScreen,
     },
 }, {
 
@@ -31,4 +42,14 @@ const MainNavigation = createBottomTabNavigator({
 
 
 //container
-export default createAppContainer(MainNavigation);
+export default createAppContainer(
+    createSwitchNavigator(
+        {
+            MainNavigation,
+            AuthStack,
+        },
+        {
+            initialRouteName: "AuthStack"
+        },
+    ),
+);
